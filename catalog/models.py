@@ -15,7 +15,7 @@ class Movie(models.Model):
     genre = models.ManyToManyField(Genre, help_text='Select a genre')
     year = models.PositiveSmallIntegerField()
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
-    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True)
+    director = models.ManyToManyField('Director')
     
     RATINGS = (
         ('G', 'General Audiences'),
@@ -70,6 +70,7 @@ class MovieInstance(models.Model):
 
 class Actor(models.Model):
     first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('Died', null=True, blank=True)
@@ -81,19 +82,21 @@ class Actor(models.Model):
         return reverse('actor-detail', args=[str(self.id)])
 
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}'
+        return f'{self.last_name}, {self.first_name} {self.middle_name}'
 
 class Director(models.Model):
     first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('Died', null=True, blank=True)
 
     def __str__(self):
-        return f'{last_name}, {first_name}'
+        return f'{self.last_name}, {self.first_name}'
 
     def get_absolute_url(self):
         return reverse('director-detail', args=[str(self.id)])
+
 class Language(models.Model):
     name = models.CharField(max_length=100, help_text='Enter the language')
 
