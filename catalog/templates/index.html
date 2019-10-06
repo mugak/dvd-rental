@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>DVD Rental Index Page</title>
+{% endblock %}
+
+{% block content %}
+  <h1>DVD Rental Home</h1>
+  <p>Welcome to DVDRental, a website developed by <em>me</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The DVD rental has the following record counts:</p>
+  <ul>
+    <li><strong>Movies:</strong> {{ num_movies }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Actors:</strong> {{ num_actors }}</li>
+    <li><strong>Directors:</strong> {{ num_directors }}</li>
+  </ul>
+{% endblock %}
