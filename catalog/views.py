@@ -24,12 +24,16 @@ def index(request):
     
     num_directors = Director.objects.count()
 
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
     context = {
         'num_movies': num_movies,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_actors': num_actors,
         'num_directors': num_directors,
+        'num_visits': num_visits,
     }
 
     # Render the HTML template index.html with the data in the context variable
