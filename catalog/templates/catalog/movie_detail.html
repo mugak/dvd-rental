@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ movie.title }}</h1>
+
+  <p><strong>Director:</strong> <a href="">{% for director in movie.director.all %} {{ director }}{% if not forloop.last %}, {% endif %}{% endfor %}</a></p>--> <!-- author detail link not yet defined -->
+  <p><strong>Synopsis:</strong> {{ movie.synopsis }}</p>
+  <p><strong>Language:</strong> {{ movie.language }}</p>  
+  <p><strong>Genre:</strong> {% for genre in movie.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+  <p><strong>Rating:</strong> {{ movie.rating }}</p>  
+
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+
+    {% for copy in movie.movieinstance_set.all %}
+      <hr>
+      <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
+      {% if copy.status != 'a' %}
+        <p><strong>Due to be returned:</strong> {{copy.due_date}}</p>
+      {% endif %}
+      <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+    {% endfor %}
+  </div>
+{% endblock %}

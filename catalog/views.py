@@ -1,6 +1,14 @@
 from django.shortcuts import render
 from catalog.models import Movie, Actor, Director, MovieInstance, Genre
+from django.views import generic
 
+class MovieListView(generic.ListView):
+    model = Movie
+    paginate_by = 10
+    
+class MovieDetailView(generic.DetailView):
+    model = Movie
+    
 def index(request):
     """View function for home page of site."""
 
