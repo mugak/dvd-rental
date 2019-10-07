@@ -2,6 +2,9 @@ from django.shortcuts import render
 from catalog.models import Movie, Actor, Director, MovieInstance, Genre
 from django.views import generic
 
+from rest_framework import viewsets
+from catalog.serializers import MovieSerializer, MovieInstanceSerializer
+
 class MovieListView(generic.ListView):
     model = Movie
     paginate_by = 10
@@ -38,3 +41,18 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+class MovieViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+
+class MovieInstanceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = MovieInstance.objects.all()
+    serializer_class = MovieInstanceSerializer
