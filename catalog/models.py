@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
 import uuid
 
 class Genre(models.Model):
@@ -45,6 +47,13 @@ class MovieInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this movie copy')
     movie = models.ForeignKey('Movie', on_delete=models.SET_NULL, null=True)
     due_date = models.DateField(null=True, blank=True)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    @property
+    def is_overdue(self):
+        if self.due_date and date.today() > self.due_date:
+            return True
+        return False
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -63,6 +72,8 @@ class MovieInstance(models.Model):
 
     class Meta:
         ordering = ['due_date']
+        permissions = (("can_mark_returned", "Set book as returned"),)   
+
 
     def __str__(self):
         return f'{self.id} ({self.movie.title})'

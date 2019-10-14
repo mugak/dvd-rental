@@ -24,8 +24,9 @@ class MovieAdmin(admin.ModelAdmin):
 
 @admin.register(MovieInstance)
 class MovieInstanceAdmin(admin.ModelAdmin):
-    list_filter = ('status', 'due_date')
+    list_filter = ('status', 'borrower', 'due_date')
+    list_display = ('movie', 'id', 'status', 'borrower', 'due_date')
     fieldsets = (
         (None, {'fields': ('movie', 'id')}),
-        ('Availability', {'fields': ('status', 'due_date')}),
+        ('Availability', {'fields': ('status', 'due_date', 'borrower')}),
     )

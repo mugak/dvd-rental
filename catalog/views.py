@@ -1,9 +1,19 @@
 from django.shortcuts import render
 from catalog.models import Movie, Actor, Director, MovieInstance, Genre
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework import viewsets
 from catalog.serializers import MovieSerializer, MovieInstanceSerializer
+
+class LoanedMoviesByUserListView(LoginRequiredMixin, generic.ListView):
+    """Generic class-based view listing movies on loan to current user."""
+    model = MovieInstance
+    template_name = 'catalog/movieinstance_list_borrowed_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return MovieInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_date')
 
 class MovieListView(generic.ListView):
     model = Movie
